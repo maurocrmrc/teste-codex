@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinySteps - Aprenda a cuidar do seu bebê</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👶</text></svg>">
+    <meta name="description" content="Aprenda a cuidar do seu bebê com TinySteps - App educativo gamificado para pais de primeira viagem">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <div class="app-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <button class="nav-button" onclick="goBack()">✕</button>
+            <div class="top-bar-center">
+                <div class="resource-item hearts">
+                    <span class="resource-icon">❤️</span>
+                    <span id="heartsCount">5</span>
+                </div>
+                <div class="resource-item streak">
+                    <span class="resource-icon">🔥</span>
+                    <span id="streakCount">0</span>
+                </div>
+                <div class="resource-item gems">
+                    <span class="resource-icon">💎</span>
+                    <span id="gemsCount">100</span>
+                </div>
+            </div>
+            <button class="profile-button" onclick="toggleSettings()">👤</button>
+        </div>
+
+        <!-- Settings Menu -->
+        <div class="settings-menu" id="settingsMenu">
+            <div class="settings-item" onclick="toggleDarkMode()">
+                <div class="settings-label">
+                    <span>🌙</span>
+                    <span>Modo Escuro</span>
+                </div>
+                <div class="toggle-switch" id="darkModeToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+            <div class="settings-item" onclick="toggleSound()">
+                <div class="settings-label">
+                    <span id="soundIcon">🔊</span>
+                    <span>Sons</span>
+                </div>
+                <div class="toggle-switch active" id="soundToggle">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div class="screen active" id="homeScreen">
+            <div class="lesson-path-container">
+                <div class="lesson-path">
+                    <!-- Lessons will be added by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Exercise Screen -->
+        <div class="screen" id="exerciseScreen">
+            <div class="exercise-header">
+                <button class="close-button" onclick="exitLesson()">✕</button>
+                <div class="progress-bar-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exercise-content">
+                <h2 class="question-title">Escolha a resposta correta</h2>
+                <p class="question-subtitle">Toque na melhor opção</p>
+
+                <div class="character-container">
+                    <div class="character-avatar" id="characterAvatar">👩‍⚕️</div>
+                    <div class="speech-bubble">
+                        <p class="speech-text" id="questionText">Carregando pergunta...</p>
+                    </div>
+                </div>
+
+                <div class="options-grid" id="optionsGrid"></div>
+            </div>
+
+            <!-- Result Modal -->
+            <div class="result-modal" id="resultModal">
+                <div class="result-header">
+                    <div class="result-icon" id="resultIcon">
+                        <span id="resultEmoji">✅</span>
+                    </div>
+                    <div class="result-text">
+                        <h3 class="result-title" id="resultTitle">Correto!</h3>
+                        <p class="result-message" id="resultMessage">Muito bem!</p>
+                    </div>
+                </div>
+                <div class="result-tip" id="resultTip">
+                    <div class="result-tip-title">💡 DICA</div>
+                    <p class="result-tip-text" id="tipText">...</p>
+                </div>
+                <button class="continue-button" id="continueBtn" onclick="nextQuestion()">CONTINUAR</button>
+            </div>
+
+            <!-- Action Footer -->
+            <div class="action-footer">
+                <button class="skip-button" onclick="skipQuestion()">PULAR</button>
+                <button class="check-button inactive" id="checkButton" onclick="checkAnswer()">VERIFICAR</button>
+            </div>
+        </div>
+
+        <!-- Lesson Complete Modal -->
+        <div class="complete-modal" id="completeModal">
+            <div class="complete-content">
+                <div class="complete-animation">🎉</div>
+                <h2 class="complete-title">Lição Completa!</h2>
+                <p class="complete-subtitle">Você está arrasando!</p>
+                <div class="xp-display">+<span id="xpEarned">50</span> XP</div>
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-number" id="accuracyPercent">100%</div>
+                        <div class="stat-label">Precisão</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" id="timeSpent">2:30</div>
+                        <div class="stat-label">Tempo</div>
+                    </div>
+                </div>
+                <button class="complete-button" onclick="closeComplete()">CONTINUAR</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="showScreen('home')">
+                <span class="nav-item-icon">🏠</span>
+                <span class="nav-item-label">Aprender</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('stories')">
+                <span class="nav-item-icon">📖</span>
+                <span class="nav-item-label">Histórias</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('profile')">
+                <span class="nav-item-icon">👤</span>
+                <span class="nav-item-label">Perfil</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('shop')">
+                <span class="nav-item-icon">🛍️</span>
+                <span class="nav-item-label">Loja</span>
+            </button>
+            <button class="nav-item" onclick="showScreen('leagues')">
+                <span class="nav-item-icon">🏆</span>
+                <span class="nav-item-label">Liga</span>
+            </button>
+        </nav>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
